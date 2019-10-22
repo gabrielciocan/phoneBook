@@ -28,14 +28,70 @@ public class ContactRepository {
 
     public void updateContact(long id, UpdateContactRequest updateContactRequest){
         String sql = "UPDATE contacts SET first_name=?, last_name=?, phone_number=?, phone_book_id=? WHERE contact_id = ?";
+        String prepSql = "UPDATE contacts SET ";
+        boolean fist_name = false;
+        boolean last_name = false;
+        boolean phone_number = false;
+        boolean phone_book_id = false;
         try(Connection connection = DataBaseConfiguration.getConnection();
-        PreparedStatement preparedStatement =connection.prepareStatement(sql)){
-            preparedStatement.setString(1,updateContactRequest.getFirstName());
-            preparedStatement.setString(2,updateContactRequest.getLastName());
-            preparedStatement.setString(3,updateContactRequest.getPhoneNumber());
-            preparedStatement.setLong(4,updateContactRequest.getPhoneBookId());
-            preparedStatement.setLong(5,id);
+        ){
+            PreparedStatement preparedStatement;
+            int parameters = 1;
+            if(!(updateContactRequest.getFirstName() == null)){
+                parameters ++;
+                prepSql = prepSql + "first_name=?";
+                fist_name = true;
+            }
+            if(!(updateContactRequest.getLastName() == null)){
+                if(parameters != 1)
+                    prepSql = prepSql + ", last_name = ?";
+                else
+                    prepSql = prepSql + "last_name = ?";
+                parameters ++;
+                last_name = true;
+            }
+            if(!(updateContactRequest.getPhoneNumber() == null)){
+                if(parameters != 1)
+                    prepSql = prepSql +", phone_number = ?";
+                else
+                    prepSql = prepSql +"phone_number = ?";
+                parameters ++;
+                phone_number = true;
+            }
+            if(!(updateContactRequest.getPhoneBookId() <= 0)){
+                if(parameters != 1)
+                    prepSql = prepSql +", phone_book_id = ?";
+                else
+                    prepSql = prepSql +"phone_book_id = ?";
+                parameters++;
+                phone_book_id = true;
+            }
+            prepSql = prepSql + " WHERE contact_id = ?";
+            preparedStatement = connection.prepareStatement(prepSql);
+            for(int i = 1; i != parameters; i++){
+                if(fist_name){
+                    preparedStatement.setString(i,updateContactRequest.getFirstName());
+                    fist_name = false;
+                    continue;
+                }
+                if(last_name){
+                    preparedStatement.setString(i,updateContactRequest.getLastName());
+                    last_name = false;
+                    continue;
+                }
+                if(phone_number){
+                    preparedStatement.setString(i,updateContactRequest.getPhoneNumber());
+                    phone_number = false;
+                    continue;
+                }
+                if(phone_book_id){
+                    preparedStatement.setLong(i,updateContactRequest.getPhoneBookId());
+                    phone_book_id = false;
+                }
+            }
+            preparedStatement.setLong(parameters,id);
             preparedStatement.executeUpdate();
+            preparedStatement.close();
         }
         catch (SQLException | IOException | ClassNotFoundException e){
             System.out.println("An error has occured during the updating process of a contact ! "+id + e.getMessage());
@@ -99,7 +155,7 @@ public class ContactRepository {
         }
         return contactList;
     }
-    public void deleteContactsByFirstNameLike(String syntax){
+    public void deleteContactsByFirstName(String syntax){
         String sql = "DELETE FROM contacts WHERE first_name LIKE ?";
         try(Connection connection = DataBaseConfiguration.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql)){

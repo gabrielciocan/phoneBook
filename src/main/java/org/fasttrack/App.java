@@ -2,15 +2,12 @@ package org.fasttrack;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.fasttrack.domain.Contact;
-import org.fasttrack.domain.PhoneBook;
 import org.fasttrack.persistance.ContactRepository;
 import org.fasttrack.persistance.PhoneBookRepository;
 import org.fasttrack.transfer.CreateContactRequest;
 import org.fasttrack.transfer.CreatePhoneBookRequest;
 import org.fasttrack.transfer.UpdateContactRequest;
-import org.fasttrack.transfer.UpdatePhoneBookRequest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,7 +48,13 @@ public class App
 //        contactRepository.createContact(createContactRequest,1);
 //        createContactRequest = getContactInstance();
 //        contactRepository.createContact(createContactRequest,3);
+        UpdateContactRequest updateContactRequest = new UpdateContactRequest();
+//        updateContactRequest.setLastName("Updatedx");
+//        updateContactRequest.setFirstName("Also update");
+//        updateContactRequest.setPhoneNumber("555555");
+        updateContactRequest.setPhoneBookId(1);
 
+        contactRepository.updateContact(5,updateContactRequest);
 
         List<Contact> contactList = contactRepository.readContact();
         for(Contact contact:contactList){
@@ -65,10 +68,11 @@ public class App
 //        List<PhoneBook> phoneBooks = phoneBookRepository.readPhoneBook();
 //        System.out.println(phoneBooks);
 
-        contactRepository.deleteContactsByFirstNameLike("%h%");
-        for(Contact contact:contactList){
-            System.out.println(contact);
-        }
+//        contactRepository.deleteContactsByFirstName("%h%");
+//        for(Contact contact:contactList){
+//            System.out.println(contact);
+//        }
+
     }
 
 }

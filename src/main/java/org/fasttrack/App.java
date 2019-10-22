@@ -32,30 +32,30 @@ public class App
 
     public static void main( String[] args )
     {
-        PhoneBookRepository phoneBookRepository = new PhoneBookRepository();
-
+//        PhoneBookRepository phoneBookRepository = new PhoneBookRepository();
+//
         ContactRepository contactRepository = new ContactRepository();
-
+//
         CreateContactRequest createContactRequest = getContactInstance();
-        createContactRequest.setPhoneBookId(1);
-
-        CreatePhoneBookRequest createPhoneBookRequest = getPhoneBookInstance();
+//        createContactRequest.setPhoneBookId(1);
+//
+//        CreatePhoneBookRequest createPhoneBookRequest = getPhoneBookInstance();
 
 //        phoneBookRepository.createPhoneBook(createPhoneBookRequest);
 //        createPhoneBookRequest = getPhoneBookInstance();
 //        phoneBookRepository.createPhoneBook(createPhoneBookRequest);
 
-//        contactRepository.createContact(createContactRequest,1);
+        contactRepository.createContact(createContactRequest,0);
 //        createContactRequest = getContactInstance();
 //        contactRepository.createContact(createContactRequest,3);
-        UpdateContactRequest updateContactRequest = new UpdateContactRequest();
+//        UpdateContactRequest updateContactRequest = new UpdateContactRequest();
 //        updateContactRequest.setLastName("Updatedx");
 //        updateContactRequest.setFirstName("Also update");
 //        updateContactRequest.setPhoneNumber("555555");
-        updateContactRequest.setPhoneBookId(1);
-
-        contactRepository.updateContact(5,updateContactRequest);
-
+//        updateContactRequest.setPhoneBookId(1);
+//
+//        contactRepository.updateContact(5,updateContactRequest);
+//
         List<Contact> contactList = contactRepository.readContact();
         for(Contact contact:contactList){
             System.out.println(contact);
@@ -72,6 +72,10 @@ public class App
 //        for(Contact contact:contactList){
 //            System.out.println(contact);
 //        }
+        List<Object> list = contactRepository.readContactAndPhoneBook();
+        for(Object ob:list){
+            System.out.println(ob);
+        }
 
     }
 

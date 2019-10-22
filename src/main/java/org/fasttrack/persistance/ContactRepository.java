@@ -1,6 +1,7 @@
 package org.fasttrack.persistance;
 
 import org.fasttrack.domain.Contact;
+import org.fasttrack.domain.PhoneBook;
 import org.fasttrack.transfer.CreateContactRequest;
 import org.fasttrack.transfer.UpdateContactRequest;
 
@@ -165,5 +166,31 @@ public class ContactRepository {
         catch (SQLException | IOException | ClassNotFoundException e){
             System.out.println("An error has occured during the delete process of multiple contacts ! "+ e.getMessage());
         }
+    }
+    public List<Object> readContactAndPhoneBook(){
+        String sql = "SELECT contacts.*, phone_books.name FROM contacts JOIN phone_books ON contacts.phone_book_id = phone_books.phone_book_id ";
+        List<Object> list = new ArrayList<>();
+        try(Connection connection = DataBaseConfiguration.getConnection();
+        Statement statement = connection.createStatement()){
+            ResultSet resultSet = statement.executeQuery(sql);
+            while(resultSet.next()){
+                Contact contact = new Contact();
+                PhoneBook phoneBook = new PhoneBook();
+
+                contact.setFirstName(resultSet.getString("first_name"));
+                contact.setLastName(resultSet.getString("last_name"));
+                contact.setPhoneNumber(resultSet.getString("phone_number"));
+                contact.setContactId(resultSet.getLong("contact_id"));
+
+                phoneBook.setPhoneBookId(resultSet.getLong("phone_book_id"));
+                phoneBook.setName(resultSet.getString("name"));
+
+                list.add(contact + ", " +phoneBook);
+            }
+        }
+        catch (SQLException | IOException | ClassNotFoundException e){
+            System.out.println("An error has occured during the read process of contacts and phone books that have the same id ! "+ e.getMessage());
+        }
+        return list;
     }
 }

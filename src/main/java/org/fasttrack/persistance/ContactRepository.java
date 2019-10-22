@@ -99,4 +99,15 @@ public class ContactRepository {
         }
         return contactList;
     }
+    public void deleteContactsByFirstNameLike(String syntax){
+        String sql = "DELETE FROM contacts WHERE first_name LIKE ?";
+        try(Connection connection = DataBaseConfiguration.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            preparedStatement.setString(1,syntax);
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException | IOException | ClassNotFoundException e){
+            System.out.println("An error has occured during the delete process of multiple contacts ! "+ e.getMessage());
+        }
+    }
 }

@@ -52,14 +52,23 @@ public class App
 //        createContactRequest = getContactInstance();
 //        contactRepository.createContact(createContactRequest,3);
 
+
         List<Contact> contactList = contactRepository.readContact();
-        System.out.println(contactList);
+        for(Contact contact:contactList){
+            System.out.println(contact);
+        }
+//        System.out.println(contactList);
+//
+//        contactList = contactRepository.readContactsFromPhoneBook(1);
+//        System.out.println("Only from one phone book: " + contactList);
+//
+//        List<PhoneBook> phoneBooks = phoneBookRepository.readPhoneBook();
+//        System.out.println(phoneBooks);
 
-        contactList = contactRepository.readContactsFromPhoneBook(1);
-        System.out.println("Only from one phone book: " + contactList);
-
-        List<PhoneBook> phoneBooks = phoneBookRepository.readPhoneBook();
-        System.out.println(phoneBooks);
+        contactRepository.deleteContactsByFirstNameLike("%h%");
+        for(Contact contact:contactList){
+            System.out.println(contact);
+        }
     }
 
 }

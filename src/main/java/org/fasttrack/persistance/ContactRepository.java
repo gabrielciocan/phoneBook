@@ -37,12 +37,12 @@ public class ContactRepository {
         ){
             PreparedStatement preparedStatement;
             int parameters = 1;
-            if(!(updateContactRequest.getFirstName() == null)){
+            if(updateContactRequest.getFirstName() != null){
                 parameters ++;
                 prepSql = prepSql + "first_name=?";
                 fist_name = true;
             }
-            if(!(updateContactRequest.getLastName() == null)){
+            if(updateContactRequest.getLastName() != null){
                 if(parameters != 1)
                     prepSql = prepSql + ", last_name = ?";
                 else
@@ -50,7 +50,7 @@ public class ContactRepository {
                 parameters ++;
                 last_name = true;
             }
-            if(!(updateContactRequest.getPhoneNumber() == null)){
+            if(updateContactRequest.getPhoneNumber() != null){
                 if(parameters != 1)
                     prepSql = prepSql +", phone_number = ?";
                 else

@@ -30,8 +30,7 @@ public class App
         return createPhoneBookRequest;
     }
 
-    public static void main( String[] args )
-    {
+    public static void main( String[] args ) {
 //        PhoneBookRepository phoneBookRepository = new PhoneBookRepository();
 //
         ContactRepository contactRepository = new ContactRepository();
@@ -45,7 +44,7 @@ public class App
 //        createPhoneBookRequest = getPhoneBookInstance();
 //        phoneBookRepository.createPhoneBook(createPhoneBookRequest);
 
-        contactRepository.createContact(createContactRequest,0);
+//        contactRepository.createContact(createContactRequest, 0);
 //        createContactRequest = getContactInstance();
 //        contactRepository.createContact(createContactRequest,3);
         UpdateContactRequest updateContactRequest = new UpdateContactRequest();
@@ -54,10 +53,10 @@ public class App
 //        updateContactRequest.setPhoneNumber("555555");
 //        updateContactRequest.setPhoneBookId(1);
 //
-        contactRepository.updateContact(5,updateContactRequest);
+//        contactRepository.updateContact(5,updateContactRequest);
 //
         List<Contact> contactList = contactRepository.readContact();
-        for(Contact contact:contactList){
+        for (Contact contact : contactList) {
             System.out.println(contact);
         }
 //        System.out.println(contactList);
@@ -72,11 +71,11 @@ public class App
 //        for(Contact contact:contactList){
 //            System.out.println(contact);
 //        }
+//        long[] ids = {1,2,3};
+//        contactRepository.deleteContacts(ids);
         List<Object> list = contactRepository.readContactAndPhoneBook();
-        for(Object ob:list){
+        for (Object ob : list) {
             System.out.println(ob);
         }
-
     }
-
 }

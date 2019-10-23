@@ -193,4 +193,25 @@ public class ContactRepository {
         }
         return list;
     }
+    public void deleteContacts(long[] ids){
+        String sql = "DELETE FROM contacts WHERE contact_id IN (";
+        for(int i = 0; i < ids.length;i++){
+            if(i < (ids.length -1)){
+                sql = sql + "?,";
+            }
+            else{
+                sql = sql + "?)";
+            }
+        }
+        try(Connection connection = DataBaseConfiguration.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            for(int i = 0; i < ids.length;i++){
+                preparedStatement.setLong(i+1,ids[i]);
+            }
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException | IOException | ClassNotFoundException e){
+            System.out.println("An error has occured during the delete process of multiple contacts using an array of ids ! "+ e.getMessage());
+        }
+    }
 }

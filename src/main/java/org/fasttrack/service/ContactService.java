@@ -23,4 +23,10 @@ public class ContactService {
         System.out.println("Retrieving contacts !");
         contactRepository.readContact();
     }
+    public void deleteContacts(long[] ids){
+        for(long id:ids){
+            System.out.println("Deleting contact: " + id);
+        }
+        contactRepository.deleteContacts(ids);
+    }
 }

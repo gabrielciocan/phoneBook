@@ -29,4 +29,8 @@ public class ContactService {
         }
         contactRepository.deleteContacts(ids);
     }
+    public void readContactsFromPhoneBook(long phoneBookId){
+        System.out.println("Retrieving contacts from phonebook: " + phoneBookId);
+        contactRepository.readContactsFromPhoneBook(phoneBookId);
+    }
 }

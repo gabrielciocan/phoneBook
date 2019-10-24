@@ -47,13 +47,13 @@ public class App
 //        contactRepository.createContact(createContactRequest, 10);
 //        createContactRequest = getContactInstance();
 //        contactRepository.createContact(createContactRequest,10);
-//        UpdateContactRequest updateContactRequest = new UpdateContactRequest();
+        UpdateContactRequest updateContactRequest = new UpdateContactRequest();
 //        updateContactRequest.setLastName("Updatedxx");
 //        updateContactRequest.setFirstName("Also update");
-//        updateContactRequest.setPhoneNumber("555555");
-//        updateContactRequest.setPhoneBookId(1);
+        updateContactRequest.setPhoneNumber("5555556");
+        updateContactRequest.setPhoneBookId(10);
 //
-//        contactRepository.updateContact(5,updateContactRequest);
+        contactRepository.updateContact(30,updateContactRequest);
 //
         List<Contact> contactList = contactRepository.readContact();
         for (Contact contact : contactList) {

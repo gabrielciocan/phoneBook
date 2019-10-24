@@ -7,9 +7,9 @@ import org.fasttrack.transfer.UpdateContactRequest;
 public class ContactService {
     private ContactRepository contactRepository = new ContactRepository();
 
-    public void createContact(CreateContactRequest createContactRequest,long phoneBookId){
+    public void createContact(CreateContactRequest createContactRequest){
         System.out.println("Creating contact: " + createContactRequest);
-        contactRepository.createContact(createContactRequest,phoneBookId);
+        contactRepository.createContact(createContactRequest);
     }
     public void updateContact(long id, UpdateContactRequest updateContactRequest){
         System.out.println("Updating contact: " + id + updateContactRequest);

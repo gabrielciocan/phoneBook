@@ -31,24 +31,24 @@ public class App
     }
 
     public static void main( String[] args ) {
-//        PhoneBookRepository phoneBookRepository = new PhoneBookRepository();
+        PhoneBookRepository phoneBookRepository = new PhoneBookRepository();
 //
         ContactRepository contactRepository = new ContactRepository();
 //
         CreateContactRequest createContactRequest = getContactInstance();
 //        createContactRequest.setPhoneBookId(1);
 //
-//        CreatePhoneBookRequest createPhoneBookRequest = getPhoneBookInstance();
+        CreatePhoneBookRequest createPhoneBookRequest = getPhoneBookInstance();
 
 //        phoneBookRepository.createPhoneBook(createPhoneBookRequest);
 //        createPhoneBookRequest = getPhoneBookInstance();
 //        phoneBookRepository.createPhoneBook(createPhoneBookRequest);
 
-//        contactRepository.createContact(createContactRequest, 0);
+//        contactRepository.createContact(createContactRequest, 10);
 //        createContactRequest = getContactInstance();
-//        contactRepository.createContact(createContactRequest,3);
-        UpdateContactRequest updateContactRequest = new UpdateContactRequest();
-        updateContactRequest.setLastName("Updatedxx");
+//        contactRepository.createContact(createContactRequest,10);
+//        UpdateContactRequest updateContactRequest = new UpdateContactRequest();
+//        updateContactRequest.setLastName("Updatedxx");
 //        updateContactRequest.setFirstName("Also update");
 //        updateContactRequest.setPhoneNumber("555555");
 //        updateContactRequest.setPhoneBookId(1);

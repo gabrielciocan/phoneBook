@@ -12,14 +12,14 @@ import java.util.List;
 
 public class ContactRepository {
 
-    public void createContact(CreateContactRequest createContactRequest, long phoneBookId){
+    public void createContact(CreateContactRequest createContactRequest){
         String sql = "INSERT INTO contacts (first_name, last_name, phone_number, phone_book_id) VALUES (?, ?, ?, ?)";
         try(Connection connection = DataBaseConfiguration.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)){
             preparedStatement.setString(1,createContactRequest.getFirstName());
             preparedStatement.setString(2,createContactRequest.getLastName());
             preparedStatement.setString(3,createContactRequest.getPhoneNumber());
-            preparedStatement.setLong(4,phoneBookId);
+            preparedStatement.setLong(4,createContactRequest.getPhoneBookId());
             preparedStatement.executeUpdate();
         }
         catch (SQLException | IOException | ClassNotFoundException e){
@@ -181,6 +181,7 @@ public class ContactRepository {
                 contact.setLastName(resultSet.getString("last_name"));
                 contact.setPhoneNumber(resultSet.getString("phone_number"));
                 contact.setContactId(resultSet.getLong("contact_id"));
+                contact.setPhoneBookId(resultSet.getLong("phone_book_id"));
 
                 phoneBook.setPhoneBookId(resultSet.getLong("phone_book_id"));
                 phoneBook.setName(resultSet.getString("name"));

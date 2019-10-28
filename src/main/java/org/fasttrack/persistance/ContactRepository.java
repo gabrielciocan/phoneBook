@@ -215,4 +215,28 @@ public class ContactRepository {
             System.out.println("An error has occured during the delete process of multiple contacts using an array of ids ! "+ e.getMessage());
         }
     }
+    public List<Contact> readContacts(String partialName){
+        String sql = "SELECT * FROM contacts WHERE first_name LIKE %?% OR last_name LIKE %?%";
+        List<Contact> contactList = new ArrayList<>();
+        try(Connection connection = DataBaseConfiguration.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            preparedStatement.setString(1,partialName);
+            preparedStatement.setString(2,partialName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                Contact contact = new Contact();
+                contact.setContactId(resultSet.getLong("contact_id"));
+                contact.setFirstName(resultSet.getString("first_name"));
+                contact.setLastName(resultSet.getString("last_name"));
+                contact.setPhoneNumber(resultSet.getString("phone_number"));
+                contact.setPhoneBookId(resultSet.getLong("phone_book_id"));
+
+                contactList.add(contact);
+            }
+        }
+        catch (SQLException | IOException | ClassNotFoundException e){
+            System.out.println("An error has occured during the retrieve process of multiple contacts by partial name ! "+ e.getMessage());
+        }
+        return contactList;
+    }
 }

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.util.List;
 
 @WebServlet("/contacts")
@@ -23,42 +24,60 @@ public class ContactServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        CreateContactRequest createContactRequest = ObjectMapperConfiguration.getObjectMapper().readValue(req.getReader(),CreateContactRequest.class);
+        CreateContactRequest createContactRequest = ObjectMapperConfiguration.getObjectMapper().readValue(req.getReader(), CreateContactRequest.class);
         contactService.createContact(createContactRequest);
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         long id = Long.parseLong(req.getParameter("id"));
-        UpdateContactRequest updateContactRequest = ObjectMapperConfiguration.getObjectMapper().readValue(req.getReader(),UpdateContactRequest.class);
-        contactService.updateContact(id,updateContactRequest);
+        UpdateContactRequest updateContactRequest = ObjectMapperConfiguration.getObjectMapper().readValue(req.getReader(), UpdateContactRequest.class);
+        try {
+            contactService.updateContact(id, updateContactRequest);
+        } catch (InvalidParameterException e) {
+            resp.sendError(404, e.getMessage());
+        }
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         long id = Long.parseLong(req.getParameter("id"));
-        contactService.deleteContact(id);
+        try {
+            contactService.deleteContact(id);
+
+        } catch (InvalidParameterException e) {
+            resp.sendError(404, e.getMessage());
+        }
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String partialName = req.getParameter("partialName");
-        String response;
+        String response = null;
         String phoneBookId = req.getParameter("phoneBookId");
         String contactId = req.getParameter("id");
-        if(partialName!=null){
-            List<Contact> contactList = contactService.readContact(partialName);
-            response = ObjectMapperConfiguration.getObjectMapper().writeValueAsString(contactList);
-        }
-        else if(phoneBookId !=null){
-            List<Contact> contactList = contactService.readContactsFromPhoneBook(Long.parseLong(phoneBookId));
-            response = ObjectMapperConfiguration.getObjectMapper().writeValueAsString(contactList);
-        }
-        else if(contactId != null){
-            Contact contact = contactService.readContact(Long.parseLong(contactId));
-            response = ObjectMapperConfiguration.getObjectMapper().writeValueAsString(contact);
-        }
-        else{
+        if (partialName != null) {
+            try {
+                List<Contact> contactList = contactService.readContact(partialName);
+                response = ObjectMapperConfiguration.getObjectMapper().writeValueAsString(contactList);
+            } catch (InvalidParameterException e) {
+                resp.sendError(404, e.getMessage());
+            }
+        } else if (phoneBookId != null) {
+            try {
+                List<Contact> contactList = contactService.readContactsFromPhoneBook(Long.parseLong(phoneBookId));
+                response = ObjectMapperConfiguration.getObjectMapper().writeValueAsString(contactList);
+            } catch (InvalidParameterException e) {
+                resp.sendError(404, e.getMessage());
+            }
+        } else if (contactId != null) {
+            try {
+                Contact contact = contactService.readContact(Long.parseLong(contactId));
+                response = ObjectMapperConfiguration.getObjectMapper().writeValueAsString(contact);
+            } catch (InvalidParameterException e) {
+                resp.sendError(404, e.getMessage());
+            }
+        } else {
             List<Contact> contactList = contactService.readContact();
             response = ObjectMapperConfiguration.getObjectMapper().writeValueAsString(contactList);
         }

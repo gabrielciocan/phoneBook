@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.util.List;
 
 @WebServlet("/phone-books")
@@ -23,7 +24,7 @@ public class PhoneBookServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         CreatePhoneBookRequest createPhoneBookRequest =
-                ObjectMapperConfiguration.getObjectMapper().readValue(req.getReader(),CreatePhoneBookRequest.class);
+                ObjectMapperConfiguration.getObjectMapper().readValue(req.getReader(), CreatePhoneBookRequest.class);
         phoneBookService.createPhoneBook(createPhoneBookRequest);
     }
 
@@ -31,8 +32,13 @@ public class PhoneBookServlet extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         long id = Long.parseLong(req.getParameter("id"));
         UpdatePhoneBookRequest updatePhoneBookRequest =
-                ObjectMapperConfiguration.getObjectMapper().readValue(req.getReader(),UpdatePhoneBookRequest.class);
-        phoneBookService.updatePhoneBook(id,updatePhoneBookRequest);
+                ObjectMapperConfiguration.getObjectMapper().readValue(req.getReader(), UpdatePhoneBookRequest.class);
+        try {
+            phoneBookService.updatePhoneBook(id, updatePhoneBookRequest);
+
+        } catch (InvalidParameterException e) {
+            resp.sendError(404, e.getMessage());
+        }
     }
 
     @Override
@@ -46,6 +52,10 @@ public class PhoneBookServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         long id = Long.parseLong(req.getParameter("id"));
-        phoneBookService.deletePhoneBook(id);
+        try {
+            phoneBookService.deletePhoneBook(id);
+        } catch (InvalidParameterException e) {
+            resp.sendError(404, e.getMessage());
+        }
     }
 }

@@ -1,8 +1,11 @@
 package org.fasttrack.service;
 
+import org.fasttrack.domain.PhoneBook;
 import org.fasttrack.persistance.PhoneBookRepository;
 import org.fasttrack.transfer.CreatePhoneBookRequest;
 import org.fasttrack.transfer.UpdatePhoneBookRequest;
+
+import java.util.List;
 
 public class PhoneBookService {
     private PhoneBookRepository phoneBookRepository = new PhoneBookRepository();
@@ -19,8 +22,8 @@ public class PhoneBookService {
         System.out.println("Deleting phone book: " + id);
         phoneBookRepository.deletePhoneBook(id);
     }
-    public void readPhoneBook(){
+    public List<PhoneBook> readPhoneBook(){
         System.out.println("Retrieving phone books!");
-        phoneBookRepository.readPhoneBook();
+        return phoneBookRepository.readPhoneBook();
     }
 }

@@ -216,7 +216,9 @@ public class ContactRepository {
         }
     }
     public List<Contact> readContacts(String partialName){
-        String sql = "SELECT * FROM contacts WHERE first_name LIKE %?% OR last_name LIKE %?%";
+        String sql = "SELECT * FROM contacts WHERE first_name LIKE ? OR last_name LIKE ?";
+        partialName = "%" + partialName + "%";
+        partialName = partialName.replace("\"","");
         List<Contact> contactList = new ArrayList<>();
         try(Connection connection = DataBaseConfiguration.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql)){
@@ -238,5 +240,24 @@ public class ContactRepository {
             System.out.println("An error has occured during the retrieve process of multiple contacts by partial name ! "+ e.getMessage());
         }
         return contactList;
+    }
+    public Contact readContact(long id){
+        String sql = "SELECT * FROM contacts WHERE contact_id = ?";
+        Contact contact = new Contact();
+        try(Connection connection = DataBaseConfiguration.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            preparedStatement.setLong(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                contact.setContactId(resultSet.getLong("contact_id"));
+                contact.setFirstName(resultSet.getString("first_name"));
+                contact.setLastName(resultSet.getString("last_name"));
+                contact.setPhoneNumber(resultSet.getString("phone_number"));
+                contact.setPhoneBookId(resultSet.getLong("phone_book_id"));
+            }
+        }catch (SQLException | IOException | ClassNotFoundException e){
+            System.out.println("An error has occured during the retrieve process of contact with id: " + id+ e.getMessage());
+        }
+        return contact;
     }
 }
